@@ -1,20 +1,28 @@
 import React from 'react';
-import './Footer.css';
-
+import '../css/Footer.modules.css';
+import { NavLink } from 'react-router-dom';
 
 function Footer() {
    return (
     <footer className="bg-dark text-white text-center py-4 mt-5">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
                 <div className="collapse navbar-collapse justify-content-center flex-column" id="menu">
                     <ul className="navbar-nav">
-                        <li className="nav-item"><a className="nav-link " href="">Sobre nosotros</a></li>
-                        <li className="nav-item"><a className="nav-link " href="">Blogs</a></li>
-                        <li className="nav-item"><a className="nav-link " href="">Contacto</a></li>
-                        <li className="nav-item"><a className="nav-link " href="">&copy; derechos reservados a
-                            Perfulandia</a></li>
+                        <li className="nav-item">
+                            <NavLink to="/sobre-nosotros" className="nav-link">Sobre nosotros</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to="/blog" className="nav-link">Blog</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to="/contacto" className="nav-link">Contacto</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <span className="nav-link disabled">&copy; derechos reservados a Perfulandia</span>
+                        </li>
                     </ul>
+
                     <div className="mt-3 d-flex gap-2">
                         <a href="https://www.instagram.com" className="socialContainer containerOne">
                             <svg className="socialSvg instagramSvg" viewBox="0 0 16 16">

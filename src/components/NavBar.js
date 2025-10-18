@@ -1,25 +1,51 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import logo from '../assets/image.png'
+
+const NAV_LINKS = [
+    { to: '/', label: 'Inicio' },
+    { to: '/InicioS', label: 'Inicio sesión/Registro' },
+    { to: '/Productos', label: 'Productos' },
+];
+
+function navLinkClass({ isActive }) {
+    return `nav-link${isActive ? ' active' : ''}`;
+}
 
 function NavBar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
-                <a className="navbar-brand text-white" href="index.html">Perfulandia <img src={logo} alt="" style={{ height: 20 }}/> </a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <NavLink className="navbar-brand d-flex align-items-center text-white" to="/">
+                    Perfulandia <img src={logo} alt="Logo" style={{ height: 20, marginLeft: 8 }} />
+                </NavLink>
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#menu"
+                    aria-controls="menu"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <Link className="navbar-brand" to="/"></Link>
-                <div className="navbar-nav d-flex flex-row gap-3">
-                    <Link className="nav-link active" to="/">Inicio</Link>
-                    <Link className="nav-link" to="/nosotros">Inicio Sesion/Registro</Link>
-                    <Link className="nav-link" to="/servicios">Productos</Link>
 
+                <div className="collapse navbar-collapse" id="menu">
+                    <ul className="navbar-nav ms-auto">
+                        {NAV_LINKS.map(({ to, label }) => (
+                            <li key={to} className="nav-item">
+                                <NavLink to={to} className={navLinkClass} end={to === '/'}>
+                                    {label}
+                                </NavLink>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </nav>
     );
+
 
 }
 
