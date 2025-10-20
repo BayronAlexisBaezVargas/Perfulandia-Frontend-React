@@ -1,0 +1,47 @@
+/* pages/Productos.module.css */
+
+.pageContainer {
+    min-height: 100vh;
+
+    /* --- CAMBIO --- */
+    /* Reducimos el padding de 4rem a 2rem para que no esté tan separado de arriba */
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+}
+
+.contentBox {
+    /* --- CAMBIO --- */
+    /* Aumentamos el max-width para que el panel sea más ancho y haya menos borde */
+    max-width: 1400px;
+
+    margin: 0 auto;
+    background-color: #212529;
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.title {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.gridContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    /* --- CAMBIO --- */
+    /* Aumentamos el 'gap' para dar un poco más de aire entre tarjetas */
+    gap: 30px;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: #495057;
+    margin: 3rem 0;
+}

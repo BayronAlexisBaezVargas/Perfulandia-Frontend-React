@@ -1,0 +1,72 @@
+/* components/ProductCard.module.css */
+
+.card {
+    width: 300px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    display: flex;
+    flex-direction: column;
+
+    /* --- CAMBIO --- */
+    /* 1. Añadimos padding a la tarjeta. Esto crea el espacio */
+    padding: 1rem;
+
+    /* 2. Quitamos el overflow para que el padding funcione bien */
+    /* overflow: hidden; */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cardImage {
+    width: 100%; /* Ahora es 100% del contenedor con padding */
+    height: 240px;
+    object-fit: cover;
+
+    /* --- CAMBIO --- */
+    /* 3. Le damos bordes redondeados a la imagen misma */
+    border-radius: 8px;
+}
+
+.cardBody {
+    /* --- CAMBIO --- */
+    /* 4. Quitamos el padding de aquí, ya que el .card lo tiene */
+    /* padding: 1.25rem; */
+
+    /* 5. Añadimos solo padding superior para separar el texto de la imagen */
+    padding-top: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.cardDescription {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+.cardPrice {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 1rem;
+}
+
+.cardButton {
+    font-weight: 600;
+}

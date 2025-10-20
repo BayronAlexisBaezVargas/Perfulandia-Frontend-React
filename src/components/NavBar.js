@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import logo from '../assets/image.png'
+import logo from '../assets/image.png';
+import { useCart } from '../context/CartContext';
+import { CartFill } from 'react-bootstrap-icons';
 
 const NAV_LINKS = [
     { to: '/', label: 'Inicio' },
@@ -13,6 +15,8 @@ function navLinkClass({ isActive }) {
 }
 
 function NavBar() {
+    const { totalItems } = useCart();
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
@@ -40,13 +44,30 @@ function NavBar() {
                                 </NavLink>
                             </li>
                         ))}
+                        <li className="nav-item">
+                            <button
+                                className="nav-link btn btn-link text-light position-relative"
+                                type="button"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#cartOffcanvas"
+                                aria-controls="cartOffcanvas"
+                            >
+                                <CartFill size={20} />
+                                {totalItems > 0 && (
+                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {totalItems}
+                                        <span className="visually-hidden">items en el carrito</span>
+                                    </span>
+                                )}
+                            </button>
+                        </li>
                     </ul>
+
+                    {/* El botón ya NO va aquí afuera */}
                 </div>
             </div>
         </nav>
     );
-
-
 }
 
 export default NavBar;

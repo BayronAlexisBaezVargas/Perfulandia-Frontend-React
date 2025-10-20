@@ -1,0 +1,109 @@
+/* components/Carrito.module.css */
+
+.cartContainer {
+    background-color: #ffffff; /* Fondo blanco para el carrito */
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Ancho máximo para el carrito */
+    margin: 0 auto; /* Centrarlo dentro del contentBox */
+}
+
+.cartTitle {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.cartEmpty {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+    padding: 1rem 0;
+}
+
+.cartList {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+.cartItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cartItem:last-child {
+    border-bottom: none;
+}
+
+.itemDetails {
+    flex-grow: 1;
+}
+
+.itemName {
+    margin: 0 0 0.25rem 0;
+    font-weight: 600;
+}
+
+.itemMeta {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.itemControls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.itemPrice {
+    font-weight: 700;
+    color: #212529;
+    min-width: 100px;
+    text-align: right;
+}
+
+.deleteButton {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 1;
+    padding: 0;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: #eee;
+    margin: 1.5rem 0;
+}
+
+.totalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.totalText {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.totalPrice {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #198754; /* Verde de Bootstrap success */
+    margin: 0;
+}
+
+.buttonRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
