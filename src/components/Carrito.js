@@ -1,30 +1,27 @@
 import React from 'react';
-import { useCart } from '../context/CartContext'; // 1. Importa el hook
-import { useNavigate } from 'react-router-dom'; // 2. Importa useNavigate para redirigir
-import styles from './Carrito.module.css'; // Sigue usando tus CSS modules
+import { useCart } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
+import styles from './Carrito.module.css';
 
 function Carrito() {
-    // 3. Obtén TODO del contexto
     const { carrito, eliminarDelCarrito, vaciarCarrito, calcularTotal } = useCart();
     const total = calcularTotal();
 
-    // 4. Hook para navegar
+
     const navigate = useNavigate();
 
     const handlePagar = () => {
-        // Esta función navegará a la página de pago
         navigate('/detalle-pago');
-        // El offcanvas se cerrará solo gracias a 'data-bs-dismiss' en el botón
     };
 
     return (
-        // 5. Esta es la estructura del Offcanvas de Bootstrap
+
         <div
-            className="offcanvas offcanvas-end" // <-- Clases de Bootstrap
+            className="offcanvas offcanvas-end"
             tabIndex="-1"
-            id="cartOffcanvas" // <-- Este ID debe coincidir con 'data-bs-target' de la NavBar
+            id="cartOffcanvas"
             aria-labelledby="cartOffcanvasLabel"
-            style={{ backgroundColor: '#f8f9fa' }} // Fondo claro, puedes cambiarlo
+            style={{ backgroundColor: '#f8f9fa' }}
         >
             {/* Cabecera del Offcanvas */}
             <div className="offcanvas-header border-bottom">
@@ -38,10 +35,7 @@ function Carrito() {
                     aria-label="Close"
                 ></button>
             </div>
-
-            {/* Cuerpo del Offcanvas (aquí va tu lógica de .cartContainer) */}
             <div className="offcanvas-body">
-                {/* Reutilizamos tus estilos y lógica de antes, pero con datos del context */}
                 <div className={styles.cartContainer} style={{padding: 0, boxShadow: 'none'}}>
                     {carrito.length === 0 ? (
                         <p className={styles.cartEmpty}>Tu carrito está vacío</p>

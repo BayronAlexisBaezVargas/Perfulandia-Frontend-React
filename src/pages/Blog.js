@@ -6,9 +6,10 @@ import blog3 from '../assets/blog3.jpg';
 import blog4 from '../assets/blog4.webp';
 import blog5 from '../assets/blog5.webp';
 
-import styles from './Blog.modules.css';
+import styles from './Blog.modules.css'; // Mantenemos la importación de CSS Modules
 
 const blogPosts = [
+// ... (blogPosts sin cambios)
     {
         id: 'modalCaso1',
         category: 'Lujo & Exclusividad',
@@ -86,7 +87,6 @@ const blogPosts = [
             </>
         )
     },
-    // --- NUEVO BLOG 3 ---
     {
         id: 'modalCaso3',
         category: 'Historia & Clásicos',
@@ -123,7 +123,6 @@ const blogPosts = [
             </>
         )
     },
-    // --- NUEVO BLOG 4 ---
     {
         id: 'modalCaso4',
         category: 'Ingredientes Exóticos',
@@ -161,7 +160,6 @@ const blogPosts = [
             </>
         )
     },
-    // --- NUEVO BLOG 5 ---
     {
         id: 'modalCaso5',
         category: 'Psicología Olfativa',
@@ -203,8 +201,9 @@ const blogPosts = [
 ];
 
 
-// --- COMPONENTE MODAL (Sin cambios) ---
+// --- COMPONENTE MODAL (Ajustado el color del header) ---
 function InfoModal({ id, titleId, title, children, isOpen = false, onClose = () => {} }) {
+// ... (mismo código de InfoModal) ...
     useEffect(() => {
         if (!isOpen) return;
 
@@ -239,7 +238,8 @@ function InfoModal({ id, titleId, title, children, isOpen = false, onClose = () 
             >
                 <div className="modal-dialog modal-lg" role="document" onClick={(e) => e.stopPropagation()}>
                     <div className="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-                        <div className="modal-header bg-primary text-white border-0">
+                        {/* Ajuste de color de header con la paleta: #b5179e */}
+                        <div className="modal-header text-white border-0" style={{ backgroundColor: '#b5179e' }}>
                             <h5 className="modal-title fw-semibold" id={titleId}>{title}</h5>
                             <button type="button" className="btn-close btn-close-white" aria-label="Close" onClick={onClose}></button>
                         </div>
@@ -262,10 +262,11 @@ function InfoModal({ id, titleId, title, children, isOpen = false, onClose = () 
     );
 }
 
-// --- COMPONENTE TARJETA (Sin cambios) ---
+// --- COMPONENTE TARJETA (Ajuste de estilos para fondo oscuro) ---
 function CaseCard({ title, summary, imgSrc, onOpen, category, readTime }) {
     return (
-        <div className={`card border-0 rounded-4 shadow-lg mb-5 overflow-hidden ${styles.cardHover}`}>
+        // Aplicamos styles.cardHover y un fondo custom para la tarjeta: #3a0ca3
+        <div className={`card border-0 rounded-4 shadow-lg mb-5 overflow-hidden ${styles.cardHover}`} style={{ backgroundColor: '#7209b7' }}>
             <div className="row g-0 align-items-center">
                 <div className="col-lg-6 order-lg-2">
                     <div className="p-4">
@@ -277,20 +278,22 @@ function CaseCard({ title, summary, imgSrc, onOpen, category, readTime }) {
                     </div>
                 </div>
                 <div className="col-lg-6 order-lg-1">
-                    <div className="card-body bg-light p-4">
+                    <div className="card-body bg-transparent text-white p-4">
                         <div className="mb-3">
-                            <span className="badge bg-primary text-white px-3 py-2 me-2 rounded-pill">
+                            {/* Ajustamos el badge a un color más vibrante de la paleta: #f72585 */}
+                            <span className="badge text-white px-3 py-2 me-2 rounded-pill" style={{ backgroundColor: '#f72585' }}>
                                 {category}
                             </span>
-                            <small className="text-muted">
+                            <small className="text-white-50 ms-2">
                                 ⏱ {readTime} min lectura
                             </small>
                         </div>
 
-                        <h3 className="card-title fw-bold text-dark mb-3 border-bottom border-primary border-2 pb-2">
+                        {/* Ajustamos el color del título y borde a un color de acento: #4cc9f0 y #f72585 */}
+                        <h3 className="card-title fw-bold mb-3 border-bottom pb-2" style={{ borderColor: '#f72585', borderBottomWidth: '2px', color: '#4cc9f0' }}>
                             {title}
                         </h3>
-                        <p className="card-text text-muted mb-4 lh-lg">
+                        <p className="card-text text-white-50 mb-4 lh-lg">
                             {summary}
                         </p>
 
@@ -304,19 +307,18 @@ function CaseCard({ title, summary, imgSrc, onOpen, category, readTime }) {
     );
 }
 
-// --- COMPONENTE PRINCIPAL (Refactorizado) ---
-function Blog() {
-    // Un solo estado para manejar qué modal está abierto (usando el 'id' del post)
-    const [openModal, setOpenModal] = useState(null);
 
-    // Buscamos el post activo basado en el ID que está en 'openModal'
+// --- COMPONENTE PRINCIPAL (Refactorizado con clases CSS Modules) ---
+function Blog() {
+    const [openModal, setOpenModal] = useState(null);
     const activePost = blogPosts.find(post => post.id === openModal);
 
     return (
         <div className={styles.root}>
-            {/* Header del Blog con Bootstrap */}
-            <section className="bg-primary text-white py-5 mb-5 position-relative">
-                {/* ... (sin cambios) ... */}
+            {/* Header del Blog (Hero) - Aplicamos la clase blogHero */}
+            {/* OJO: El Hero sigue estando fuera del nuevo div, como solicitaste. */}
+            <section className={`text-white py-5 position-relative ${styles.blogHero}`}>
+                {/* Fondo sutil para el texto */}
                 <div className="bg-dark bg-opacity-25 position-absolute top-0 start-0 w-100 h-100"></div>
                 <div className="container text-center position-relative">
                     <h1 className="display-2 fw-bold mb-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
@@ -329,107 +331,110 @@ function Blog() {
                 </div>
             </section>
 
-            {/* Estadísticas con Bootstrap */}
-            <section className="container mb-5">
-                {/* ... (sin cambios) ... */}
-                <div className="bg-dark text-white rounded-4 py-5 px-4">
-                    <div className="row text-center">
-                        <div className="col-md-4">
-                            <div className="p-3">
-                                <h2 className="display-4 fw-bold text-primary mb-2">50+</h2>
-                                <p className="fs-5 mb-0">Artículos Publicados</p>
+            {/* --- NUEVO CONTENEDOR GENERAL DEL CONTENIDO --- */}
+            {/* Este div principal contendrá el resto del contenido y tendrá el fondo oscuro. */}
+            <div className={`container ${styles.blogContentWrapper}`}>
+
+                {/* Estadísticas con Bootstrap */}
+                <section className="mb-5">
+                    {/* Usamos statsContainer */}
+                    <div className={`${styles.statsContainer} rounded-4 py-5 px-4`}>
+                        <div className="row text-center">
+                            <div className="col-md-4">
+                                <div className="p-3">
+                                    <h2 className="display-4 fw-bold text-white mb-2" style={{color: '#4cc9f0'}}>50+</h2>
+                                    <p className="fs-5 mb-0 text-white-50">Artículos Publicados</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-4 border-start border-end border-secondary d-none d-md-block">
-                            <div className="p-3">
-                                <h2 className="display-4 fw-bold text-primary mb-2">15k</h2>
-                                <p className="fs-5 mb-0">Lectores Mensuales</p>
+                            <div className="col-md-4 border-start border-end border-secondary d-none d-md-block">
+                                <div className="p-3">
+                                    <h2 className="display-4 fw-bold text-white mb-2" style={{color: '#4cc9f0'}}>15k</h2>
+                                    <p className="fs-5 mb-0 text-white-50">Lectores Mensuales</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-4 d-md-none">
-                            <div className="p-3 border-top border-secondary mt-3 pt-4">
-                                <h2 className="display-4 fw-bold text-primary mb-2">15k</h2>
-                                <p className="fs-5 mb-0">Lectores Mensuales</p>
+                            <div className="col-md-4 d-md-none">
+                                <div className="p-3 border-top border-secondary mt-3 pt-4">
+                                    <h2 className="display-4 fw-bold text-white mb-2" style={{color: '#4cc9f0'}}>15k</h2>
+                                    <p className="fs-5 mb-0 text-white-50">Lectores Mensuales</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="p-3">
-                                <h2 className="display-4 fw-bold text-primary mb-2">98%</h2>
-                                <p className="fs-5 mb-0">Satisfacción</p>
+                            <div className="col-md-4">
+                                <div className="p-3">
+                                    <h2 className="display-4 fw-bold text-white mb-2" style={{color: '#4cc9f0'}}>98%</h2>
+                                    <p className="fs-5 mb-0 text-white-50">Satisfacción</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {/* === Artículos del Blog (MEJORADO) === */}
-            {/* Usamos .map() para renderizar las tarjetas desde nuestro array de datos */}
-            <section className="container my-5">
-                <div className="row">
-                    <div className="col-12">
-                        <h2 className="text-center text-dark fw-bold mb-5 display-5">
-                            Artículos Destacados
-                        </h2>
+                {/* === Artículos del Blog === */}
+                <section className="my-5">
+                    <div className="row">
+                        <div className="col-12">
+                            <h2 className="text-center text-white fw-bold mb-5 display-5">
+                                Artículos Destacados
+                            </h2>
 
-                        {blogPosts.map((post) => (
-                            <CaseCard
-                                key={post.id}
-                                category={post.category}
-                                readTime={post.readTime}
-                                title={post.title}
-                                summary={post.summary}
-                                imgSrc={post.imgSrc}
-                                onOpen={() => setOpenModal(post.id)}
-                            />
-                        ))}
+                            {blogPosts.map((post) => (
+                                <CaseCard
+                                    key={post.id}
+                                    category={post.category}
+                                    readTime={post.readTime}
+                                    title={post.title}
+                                    summary={post.summary}
+                                    imgSrc={post.imgSrc}
+                                    onOpen={() => setOpenModal(post.id)}
+                                />
+                            ))}
 
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {/* Newsletter con Bootstrap */}
-            <section className="container my-5">
-                {/* ... (sin cambios) ... */}
-                <div className="row justify-content-center">
-                    <div className="col-lg-8">
-                        <div className="card border-0 shadow-lg rounded-4 bg-light">
-                            <div className="card-body text-center p-5">
-                                <h3 className="text-dark fw-bold mb-3 display-6">Mantente al día</h3>
-                                <p className="lead text-muted mb-4 fs-5">
-                                    Recibe los mejores artículos sobre fragancias directamente en tu bandeja de entrada
-                                </p>
-                                <div className="row g-3 align-items-center justify-content-center">
-                                    <div className="col-md-7">
-                                        <input
-                                            type="email"
-                                            className="form-control form-control-lg rounded-3 border-0 shadow-sm"
-                                            placeholder="tu-email@ejemplo.com"
-                                        />
-                                    </div>
-                                    <div className="col-md-auto">
-                                        <button className="btn btn-dark btn-lg rounded-3 px-4">
-                                            Suscribirme
-                                        </button>
+                {/* Newsletter con Bootstrap */}
+                <section className="my-5">
+                    <div className="row justify-content-center">
+                        <div className="col-lg-8">
+                            <div className="card border-0 shadow-lg rounded-4 bg-light">
+                                <div className="card-body text-center p-5">
+                                    <h3 className="text-dark fw-bold mb-3 display-6">Mantente al día</h3>
+                                    <p className="lead text-muted mb-4 fs-5">
+                                        Recibe los mejores artículos sobre fragancias directamente en tu bandeja de entrada
+                                    </p>
+                                    <div className="row g-3 align-items-center justify-content-center">
+                                        <div className="col-md-7">
+                                            <input
+                                                type="email"
+                                                className="form-control form-control-lg rounded-3 border-0 shadow-sm"
+                                                placeholder="tu-email@ejemplo.com"
+                                            />
+                                        </div>
+                                        <div className="col-md-auto">
+                                            {/* Usamos btn-dark para que herede los estilos de animación */}
+                                            <button className="btn btn-dark btn-lg rounded-3 px-4">
+                                                Suscribirme
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {/* === Modales con Bootstrap (MEJORADO) === */}
-            {/* Renderizamos un solo Modal y le pasamos los datos del 'activePost' */}
-            <InfoModal
-                id={activePost?.id}
-                titleId={`${activePost?.id}Label`}
-                title={activePost?.title}
-                isOpen={!!activePost} // Convertimos activePost (objeto o undefined) en un booleano
-                onClose={() => setOpenModal(null)}
-            >
-                {/* El contenido del modal (JSX) viene directamente del objeto 'activePost' */}
-                {activePost?.modalContent}
-            </InfoModal>
+                {/* Modales */}
+                <InfoModal
+                    id={activePost?.id}
+                    titleId={`${activePost?.id}Label`}
+                    title={activePost?.title}
+                    isOpen={!!activePost}
+                    onClose={() => setOpenModal(null)}
+                >
+                    {activePost?.modalContent}
+                </InfoModal>
+            </div>
+            {/* --- FIN NUEVO CONTENEDOR GENERAL --- */}
         </div>
     );
 }

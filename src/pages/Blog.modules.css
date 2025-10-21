@@ -1,8 +1,11 @@
+/* src/pages/Blog.modules.css */
+
+/* El selector general para los botones */
 .root :is(button, :global(.btn), :global(.btn.btn-dark)):not(:global(.btn-close)) {
     position: relative;
     padding: 10px 20px;
     border-radius: 7px;
-    border: 1px solid rgb(61, 106, 255);
+    border: 1px solid #7209b7; /* Morado de la paleta */
     font-size: 14px;
     text-transform: uppercase;
     font-weight: 600;
@@ -17,11 +20,12 @@
 }
 
 .root :is(button, :global(.btn), :global(.btn.btn-dark)):not(:global(.btn-close)):hover {
-    background: rgb(61, 106, 255);
-    box-shadow: 0 0 30px 5px rgba(0, 142, 236, 0.815);
+    background: #560bad; /* Morado más oscuro de la paleta */
+    box-shadow: 0 0 30px 5px rgba(114, 9, 183, 0.6); /* Sombra morada */
     -webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
     transition: all 0.2s ease-out;
+    filter: brightness(1.1);
 }
 
 .root :is(button, :global(.btn), :global(.btn.btn-dark)):not(:global(.btn-close))::before {
@@ -64,10 +68,12 @@
 /* Solo efectos de hover minimalistas */
 .card-hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #7209b7 !important;
 }
 
 .card-hover:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(181, 23, 158, 0.4) !important;
 }
 
 .image-hover {
@@ -78,7 +84,37 @@
     transform: scale(1.02);
 }
 
+/* --- NUEVOS ESTILOS DE DISEÑO GENERAL --- */
 
+/* Hero Section (Fuera del contenedor principal) */
+.blogHero {
+    background-image: linear-gradient(135deg, #f72585 0%, #3f37c9 100%);
+    padding-top: 4rem; /* Hacemos el padding del hero un poco más pequeño */
+    padding-bottom: 2rem; /* Reducido para que la sección de stats se vea mejor */
+    margin-bottom: 0 !important;
+    border-radius: 0 0 15px 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Contenedor Principal (Donde va la mayoría del contenido) */
+.blogContentWrapper {
+    max-width: 1200px;
+    margin: 40px auto; /* Aumentamos el margen superior para la separación */
+    background: #480ca8; /* Fondo principal oscuro */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* ELIMINAMOS la superposición margin-top: -15px; */
+}
+
+/* Estilos para la sección de estadísticas dentro del nuevo wrapper */
+.statsContainer {
+    background: #560bad; /* Color de la paleta: Morado más oscuro para contraste */
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+}
 
 
 

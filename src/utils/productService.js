@@ -1,5 +1,3 @@
-// src/utils/productService.js
-
 import img1 from '../assets/1.webp';
 import img2 from '../assets/2.webp';
 import img3 from '../assets/3.webp';
@@ -10,7 +8,6 @@ import img7 from '../assets/7.webp';
 import img8 from '../assets/8.webp';
 import img9 from '../assets/9.webp';
 
-// Lista inicial de productos (si localStorage está vacío)
 const productosIniciales = [
     {id: 1, nombre: "Mandarin Sky", precio: 40000, stock: 12, imagen: img1, descripcion: "Fragancia cítrica y vibrante, con notas de mandarina y brisa marina."},
     {id: 2, nombre: "All Black", precio: 70000, stock: 102, imagen: img2, descripcion: "Aroma intenso para la noche, con cardamomo, tonka y cedro."},
@@ -24,15 +21,12 @@ const productosIniciales = [
 ];
 
 const PRODUCTS_KEY = 'perfumes';
-
-// Función para obtener la lista de productos desde localStorage
 export const getProducts = () => {
     try {
         const storedProducts = localStorage.getItem(PRODUCTS_KEY);
         if (storedProducts) {
             return JSON.parse(storedProducts);
         }
-        // Si no hay productos, inicializa y devuelve la lista inicial
         localStorage.setItem(PRODUCTS_KEY, JSON.stringify(productosIniciales));
         return productosIniciales;
 
@@ -41,8 +35,6 @@ export const getProducts = () => {
         return productosIniciales;
     }
 }
-
-// Función para guardar la lista de productos en localStorage
 export const saveProducts = (products) => {
     try {
         localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
@@ -50,8 +42,6 @@ export const saveProducts = (products) => {
         console.error("Error al guardar productos:", error);
     }
 }
-
-// Función para obtener un producto por ID
 export const getProductById = (id) => {
     const products = getProducts();
     // Convertir ID a número ya que URL params son strings

@@ -1,12 +1,10 @@
-/* components/Carrito.module.css */
-
 .cartContainer {
-    background-color: #ffffff; /* Fondo blanco para el carrito */
+    background-color: #ffffff;
     border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-width: 800px; /* Ancho máximo para el carrito */
-    margin: 0 auto; /* Centrarlo dentro del contentBox */
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .cartTitle {
@@ -98,7 +96,7 @@
 .totalPrice {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #198754; /* Verde de Bootstrap success */
+    color: #198754;
     margin: 0;
 }
 

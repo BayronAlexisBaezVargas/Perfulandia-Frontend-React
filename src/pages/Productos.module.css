@@ -1,5 +1,3 @@
-/* pages/Productos.module.css */
-
 .pageContainer {
     min-height: 100vh;
     padding: 2rem 1rem;
@@ -7,7 +5,6 @@
 }
 
 .contentBox {
-    /* Aumentamos el max-width para que el panel sea más ancho y haya menos borde */
     max-width: 1400px;
     margin: 0 auto;
     background-color: #212529;
@@ -26,7 +23,7 @@
 
 .titleHighlight {
     font-weight: 700;
-    color: #ffc107; /* Color de acento */
+    color: #ffc107;
     border-bottom: 3px solid #0d6efd;
     padding-bottom: 5px;
 }
@@ -45,4 +42,3 @@
     margin: 3rem 0;
 }
 
-/* Los estilos .cardWrapper, .cardWrapper:hover, .detailButtonContainer y .detailButton han sido eliminados de aquí */
