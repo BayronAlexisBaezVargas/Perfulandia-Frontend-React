@@ -1,12 +1,14 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom'; // Importar useNavigate
 import logo from '../assets/image.png';
 import { useCart } from '../context/CartContext';
-import { CartFill } from 'react-bootstrap-icons';
+// --- CAMBIO: Importar iconos necesarios y useAuth ---
+import { CartFill, PersonCircle, BoxArrowRight } from 'react-bootstrap-icons';
+import { useAuth } from '../utils/auth';
 
 const NAV_LINKS = [
     { to: '/', label: 'Inicio' },
-    { to: '/InicioS', label: 'Inicio sesión/Registro' },
+    // Eliminado el link estático a InicioSesion/Registro
     { to: '/Productos', label: 'Productos' },
 ];
 
@@ -16,6 +18,25 @@ function navLinkClass({ isActive }) {
 
 function NavBar() {
     const { totalItems } = useCart();
+    const { user, handleLogout } = useAuth(); // Usar el hook de auth
+    const navigate = useNavigate();
+
+    // Determinar el color del icono de perfil
+    const profileIconClass = user ? 'text-success' : 'text-white';
+
+    const handleProfileClick = () => {
+        if (user) {
+            navigate('/perfil');
+        } else {
+            navigate('/InicioS');
+        }
+    };
+
+    // Función para manejar el logout
+    const handleUserLogout = () => {
+        handleLogout();
+        navigate('/'); // Redirigir a inicio después de cerrar sesión
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -44,6 +65,51 @@ function NavBar() {
                                 </NavLink>
                             </li>
                         ))}
+
+                        {/* Botón/Icono de Perfil */}
+                        <li className="nav-item">
+                            <button
+                                className={`nav-link btn btn-link ${profileIconClass}`}
+                                type="button"
+                                onClick={handleProfileClick}
+                                title={user ? `Ver Perfil: ${user.name}` : 'Iniciar Sesión'}
+                                style={{
+                                    border: 'none',
+                                    backgroundColor: 'transparent',
+                                    cursor: 'pointer',
+                                    fontSize: '1rem',
+                                    fontWeight: '500',
+                                    padding: '0.5rem 1rem'
+                                }}
+                            >
+                                <PersonCircle size={20} className="me-2" />
+                                {user ? user.name : 'Ingresar'}
+                            </button>
+                        </li>
+
+                        {/* Botón de Cerrar Sesión (solo si está logeado y NO es admin) */}
+                        {user && user.role !== 'admin' && ( // Solo mostrar el de usuario, el de admin es en su dashboard
+                            <li className="nav-item">
+                                <button
+                                    className="nav-link btn btn-link text-danger"
+                                    type="button"
+                                    onClick={handleUserLogout}
+                                    title="Cerrar Sesión"
+                                    style={{
+                                        border: 'none',
+                                        backgroundColor: 'transparent',
+                                        cursor: 'pointer',
+                                        fontSize: '1rem',
+                                        fontWeight: '500',
+                                        padding: '0.5rem 1rem'
+                                    }}
+                                >
+                                    <BoxArrowRight size={20} />
+                                </button>
+                            </li>
+                        )}
+
+                        {/* Botón del Carrito (Offcanvas) */}
                         <li className="nav-item">
                             <button
                                 className="nav-link btn btn-link text-light position-relative"

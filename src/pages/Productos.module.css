@@ -2,18 +2,13 @@
 
 .pageContainer {
     min-height: 100vh;
-
-    /* --- CAMBIO --- */
-    /* Reducimos el padding de 4rem a 2rem para que no esté tan separado de arriba */
     padding: 2rem 1rem;
     box-sizing: border-box;
 }
 
 .contentBox {
-    /* --- CAMBIO --- */
     /* Aumentamos el max-width para que el panel sea más ancho y haya menos borde */
     max-width: 1400px;
-
     margin: 0 auto;
     background-color: #212529;
     border-radius: 15px;
@@ -24,18 +19,22 @@
 .title {
     color: #ffffff;
     text-align: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1rem; /* Reducido para añadir subtítulo */
     font-weight: 300;
     letter-spacing: 1px;
+}
+
+.titleHighlight {
+    font-weight: 700;
+    color: #ffc107; /* Color de acento */
+    border-bottom: 3px solid #0d6efd;
+    padding-bottom: 5px;
 }
 
 .gridContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-
-    /* --- CAMBIO --- */
-    /* Aumentamos el 'gap' para dar un poco más de aire entre tarjetas */
     gap: 30px;
 }
 
@@ -45,3 +44,5 @@
     background-color: #495057;
     margin: 3rem 0;
 }
+
+/* Los estilos .cardWrapper, .cardWrapper:hover, .detailButtonContainer y .detailButton han sido eliminados de aquí */

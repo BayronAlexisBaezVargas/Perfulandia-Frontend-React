@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './InicioS.module.css';
+// --- CAMBIO: Importar utilidades de autenticación necesarias ---
+import { getUsers, saveUsers, useAuth } from '../utils/auth';
 
 function InicioSesion() {
     // Correos con rol admin
@@ -11,6 +13,8 @@ function InicioSesion() {
     const isAdminEmail = (email) => ADMIN_EMAILS.has(String(email).toLowerCase());
 
     const navigate = useNavigate();
+    // Obtener la función handleLogin del contexto
+    const { handleLogin } = useAuth();
 
     // Estado: Login
     const [loginEmail, setLoginEmail] = useState('');
@@ -25,19 +29,7 @@ function InicioSesion() {
     const [regMsg, setRegMsg] = useState('');
     const [regOk, setRegOk] = useState(false);
 
-    // Utilidades de almacenamiento y validación
-    const getUsers = () => {
-        try {
-            return JSON.parse(localStorage.getItem('users') || '[]');
-        } catch {
-            return [];
-        }
-    };
-
-    const saveUsers = (users) => {
-        localStorage.setItem('users', JSON.stringify(users));
-    };
-
+    // Utilidades de validación (se mantienen)
     const emailValido = (email) =>
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase());
 
@@ -58,6 +50,7 @@ function InicioSesion() {
             return;
         }
 
+        // --- CAMBIO: Usar getUsers de utilidades ---
         const users = getUsers();
         const user = users.find((u) => u.email.toLowerCase() === loginEmail.toLowerCase());
 
@@ -66,21 +59,26 @@ function InicioSesion() {
             return;
         }
 
-        // Determinar rol por correo
+        // Determinar rol por correo y preparar los datos de la sesión
         const role = isAdminEmail(loginEmail) ? 'admin' : 'user';
+        // Incluir name y email en el objeto de sesión para el contexto/navbar
+        const authUser = {
+            email: user.email,
+            name: user.name,
+            role
+        };
 
-        // Guardar sesión con rol
-        localStorage.setItem(
-            'authUser',
-            JSON.stringify({ email: user.email, name: user.name, role })
-        );
+        // --- CAMBIO: Iniciar sesión usando el contexto ---
+        handleLogin(authUser);
 
         setLoginOk(true);
         setLoginMsg('¡Inicio de sesión exitoso!');
 
-        // Si es admin, redirigir a /admin
+        // Redirigir a /admin o /perfil
         if (role === 'admin') {
             navigate('/admin');
+        } else {
+            navigate('/perfil'); // Redirigir al perfil del cliente
         }
     };
 
@@ -102,6 +100,7 @@ function InicioSesion() {
             return;
         }
 
+        // --- CAMBIO: Usar getUsers y saveUsers de utilidades ---
         const users = getUsers();
         const exists = users.some((u) => u.email.toLowerCase() === regEmail.toLowerCase());
         if (exists) {
@@ -109,18 +108,31 @@ function InicioSesion() {
             return;
         }
 
+        // Crear nuevo usuario (se usarán los valores por defecto del perfil en auth.js)
+        const role = isAdminEmail(regEmail) ? 'admin' : 'user';
         const nuevo = {
             name: regName.trim(),
             email: regEmail.trim(),
             password: regPass,
-            role: isAdminEmail(regEmail) ? 'admin' : 'user',
+            role: role,
         };
 
         const updated = [...users, nuevo];
+        // Guardar la lista completa de usuarios
         saveUsers(updated);
 
+        // Iniciar sesión automáticamente después del registro usando el contexto
+        handleLogin({ name: nuevo.name, email: nuevo.email, role: nuevo.role });
+
         setRegOk(true);
-        setRegMsg('Registro exitoso. Ahora puedes iniciar sesión.');
+        setRegMsg('Registro exitoso. ¡Sesión iniciada! Redirigiendo a tu perfil.');
+
+        // Redirigir
+        if (role === 'admin') {
+            navigate('/admin');
+        } else {
+            navigate('/perfil'); // Redirigir al perfil del cliente
+        }
     };
 
     return (

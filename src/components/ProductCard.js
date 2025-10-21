@@ -1,36 +1,55 @@
+// src/components/ProductCard.js
 import React from 'react';
-// Importa los estilos de la tarjeta
+import { Link } from 'react-router-dom';
 import styles from './ProductCard.module.css';
 
 function ProductCard({ producto, onAgregarAlCarrito }) {
 
+    const handleAddToCartClick = (e) => {
+        // Detiene la propagación del evento para evitar que el Link padre (toda la tarjeta) se active
+        e.stopPropagation();
+        // Previene la acción por defecto del enlace (aunque Link en React ya lo maneja)
+        e.preventDefault();
+
+        onAgregarAlCarrito(producto);
+    }
+
     return (
-        <div className={styles.card}>
-            <img
-                src={producto.imagen}
-                alt={producto.nombre}
-                className={styles.cardImage}
-            />
-            <div className={styles.cardBody}>
-                <h5 className={styles.cardTitle}>{producto.nombre}</h5>
+        // Envolvemos toda la tarjeta en el Link y aplicamos estilos para simular la tarjeta
+        <Link
+            to={`/productos/${producto.id}`}
+            title={`Ver detalles de ${producto.nombre}`}
+            className={styles.cardLink}
+        >
+            <div className={styles.card}>
+                <img
+                    src={producto.imagen}
+                    alt={producto.nombre}
+                    className={styles.cardImage}
+                />
+                <div className={styles.cardBody}>
+                    <h5 className={styles.cardTitle}>
+                        {producto.nombre}
+                    </h5>
 
-                <p className={styles.cardDescription}>
-                    {producto.descripcion}
-                </p>
+                    <p className={styles.cardDescription}>
+                        {producto.descripcion}
+                    </p>
 
-                <p className={styles.cardPrice}>
-                    ${producto.precio.toLocaleString('es-CL')}
-                </p>
+                    <p className={styles.cardPrice}>
+                        ${producto.precio.toLocaleString('es-CL')}
+                    </p>
 
-                <button
-                    // Combinamos clases de Bootstrap y CSS Modules
-                    className={`btn btn-primary w-100 ${styles.cardButton}`}
-                    onClick={() => onAgregarAlCarrito(producto)}
-                >
-                    Agregar al Carrito
-                </button>
+                    <button
+                        className={`btn btn-primary w-100 ${styles.cardButton}`}
+                        onClick={handleAddToCartClick}
+                        disabled={producto.stock <= 0}
+                    >
+                        {producto.stock > 0 ? 'Agregar al Carrito' : 'Agotado'}
+                    </button>
+                </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

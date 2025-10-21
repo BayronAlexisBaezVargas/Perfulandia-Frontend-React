@@ -1,23 +1,54 @@
-import React from 'react';
+import React, { useEffect } from 'react'; // Importar useEffect
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Importar useNavigate
+// --- CAMBIO: Importar useAuth ---
+import { useAuth } from '../utils/auth';
 
-// Puedes crear un DetallePago.module.css similar al de Productos
-// Por ahora usaré estilos en línea y clases de Bootstrap
 import styles from './Productos.module.css'; // Reutiliza el estilo del contenedor
 
 function DetallePago() {
-    // Obtenemos los datos del carrito para mostrarlos
     const { carrito, calcularTotal } = useCart();
+    // --- CAMBIO: Obtener estado de usuario y navegación ---
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const total = calcularTotal();
 
+    // Efecto para verificar la autenticación
+    useEffect(() => {
+        if (!user) {
+            // Si no hay usuario, redirigir a la página de inicio de sesión
+            alert("Debes iniciar sesión o registrarte para proceder al pago.");
+            // Reemplazar la entrada en el historial para que no puedan volver con "atrás"
+            navigate('/InicioS', { replace: true });
+        }
+    }, [user, navigate]);
+
+    // Mostrar un estado de carga o redirigiendo
+    if (!user) {
+        return (
+            <div className={styles.pageContainer}>
+                <div className={styles.contentBox} style={{color: 'white', maxWidth: '800px'}}>
+                    <h1 className={styles.title}>Redirigiendo a Inicio de Sesión...</h1>
+                    <p className="text-center">Por favor, inicia sesión para continuar con tu compra.</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Lógica principal de DetallePago para usuarios autenticados
     return (
         <div className={styles.pageContainer}>
             <div className={styles.contentBox} style={{color: 'white', maxWidth: '800px'}}>
                 <h1 className={styles.title}>Detalle de Pago</h1>
 
+                {/* Mensaje de bienvenida/confirmación */}
+                <p className="text-center lead mb-4">
+                    ¡Gracias por tu compra, <span className='text-primary fw-bold'>{user.name}</span>! Finaliza tu pedido.
+                </p>
+
                 {carrito.length > 0 ? (
                     <>
+                        {/* ... (el resto del resumen del carrito y el botón de pagar) ... */}
                         <h3 className="mb-3">Resumen de tu compra</h3>
                         <ul className="list-group list-group-flush mb-4">
                             {carrito.map(item => (

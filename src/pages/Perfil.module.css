@@ -1,0 +1,58 @@
+.pageContainer {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+}
+
+.contentBox {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #212529;
+    border-radius: 15px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    color: white; /* Texto blanco por defecto */
+}
+
+.title {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.formLabel {
+    font-weight: 600;
+    color: #ffeba7; /* Un color de acento de InicioS.module.css */
+}
+
+.formInput,
+.formInput:focus {
+    background-color: #e5e7eb; /* Color de fondo oscuro para input */
+    border: 1px solid #495057;
+    color: #000000;
+}
+
+/* Estilos para mensajes de estado */
+.alertSuccess {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.alertError {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}

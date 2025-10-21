@@ -3,9 +3,11 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 // --- NUEVO ---
 // 1. Importa el CartProvider
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './utils/auth';
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+
 
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
@@ -22,10 +24,11 @@ import Contacto from "./pages/Contacto";
 import Admin from './pages/admin';
 import SobreNosotros from "./pages/AboutUS";
 
-// --- NUEVO ---
-// 3. Importa la nueva página de DetallePago
 import DetallePago from "./pages/DetallePago";
 
+import Perfil from "./pages/Perfil";
+
+import DetalleProducto from "./pages/DetalleProducto";
 
 function Layout() {
     const location = useLocation();
@@ -47,6 +50,8 @@ function Layout() {
                 <Route path="/contacto" element={<Contacto />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/detalle-pago" element={<DetallePago />} />
+                <Route path="/perfil" element={<Perfil />} />
+                <Route path="/productos/:id" element={<DetalleProducto />} />
             </Routes>
             {!hideChrome && <Footer />}
         </>
@@ -56,9 +61,11 @@ function Layout() {
 function App() {
     return (
         <Router>
-            <CartProvider>
-                <Layout />
-            </CartProvider>
+            <AuthProvider>
+                <CartProvider>
+                    <Layout />
+                </CartProvider>
+            </AuthProvider>
         </Router>
     );
 }
