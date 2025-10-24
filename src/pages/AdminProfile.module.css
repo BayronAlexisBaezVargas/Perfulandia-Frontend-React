@@ -1,0 +1,79 @@
+/* src/pages/AdminProfile.module.css */
+
+/* Contenedor principal de la vista */
+.profileContainer {
+    padding: 30px;
+}
+
+/* Tarjeta de perfil principal (oscuro y elevado) */
+.profileCard {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #374151; /* Darker background for the card */
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.title {
+    color: #4cc9f0; /* Color de énfasis azul claro */
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Estilos de inputs */
+.formInput {
+    background-color: #4b5563; /* Fondo de input */
+    border: 1px solid #6b7280;
+    color: #ffffff !important;
+}
+
+.formInput::placeholder {
+    color: #a0a0a0;
+}
+
+.formInput:focus {
+    background-color: #4b5563;
+    border-color: #4361ee;
+    box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.4);
+}
+
+.label {
+    color: #e5e7eb;
+    font-weight: 500;
+}
+
+/* Estilo para los campos de solo lectura (Nombre, Email, Rol) */
+.readOnlyValue {
+    background-color: #1f2937; /* Fondo muy oscuro, no editable */
+    border: 1px solid #4b5563;
+    color: #d1d5db;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    cursor: default;
+    line-height: 1.5;
+}
+
+.detailLabel {
+    color: #9ca3af;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+}
+
+/* Botón de guardar */
+.saveButton {
+    background-color: #0d6efd; /* Azul primary */
+    border-color: #0d6efd;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.saveButton:hover {
+    background-color: #0b5ed7;
+    border-color: #0b5ed7;
+}

@@ -6,9 +6,12 @@ import './admin.modules.css';
 // --- Componentes y Servicios de Vistas ---
 import AdminProducts from './AdminProducts';
 import AdminOrders from './AdminOrders';
-import { getOrders } from '../utils/orderService'; // Importar el servicio de órdenes
+import AdminProfile from './AdminProfile';
+import AdminCustomers from './AdminCustomers';
+import AdminReports from './AdminReports';
+import { getOrders } from '../utils/orderService';
 
-/* Iconos simples en SVG (sin dependencias) */
+/* Iconos simples en SVG */
 function IconCash(props) {
     return (
         <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true" {...props}>
@@ -58,6 +61,14 @@ function IconChart(props) {
         </svg>
     );
 }
+function IconPerson(props) {
+    return (
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" {...props}>
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4s-4 1.79-4 4s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+        </svg>
+    );
+}
+// ------------------------------------
 
 const VIEWS = {
     DASHBOARD: 'dashboard',
@@ -65,6 +76,7 @@ const VIEWS = {
     PRODUCTS: 'products',
     CUSTOMERS: 'customers',
     REPORTS: 'reports',
+    PROFILE: 'profile', // NUEVA VISTA
 };
 
 // Helper para mapear el estado a la clase de Bootstrap
@@ -84,7 +96,7 @@ const getBadgeClass = (status) => {
 }
 
 // Componente para renderizar el contenido según la vista seleccionada
-function ContentView({ view }) {
+function ContentView({ view, authUser, onProfileUpdate }) {
     // Lógica dinámica para el Dashboard
     const [latestOrders, setLatestOrders] = useState([]);
     const [stats, setStats] = useState({ totalSales: 0, newOrders: 0, totalCustomers: 1283 });
@@ -92,12 +104,9 @@ function ContentView({ view }) {
     useEffect(() => {
         if (view === VIEWS.DASHBOARD) {
             const allOrders = getOrders();
-            // Mostrar solo los 5 pedidos más recientes
             setLatestOrders(allOrders.slice(0, 5));
 
-            // Simular estadísticas basadas en los pedidos (simple)
             const totalSales = allOrders.reduce((sum, order) => sum + (order.status !== 'Cancelado' ? order.total : 0), 0);
-            // El número de clientes es estático en este caso, solo actualizamos ventas y pendientes
             const newOrders = allOrders.filter(order => order.status === 'Pendiente').length;
 
             setStats(prev => ({
@@ -195,8 +204,12 @@ function ContentView({ view }) {
             return <AdminOrders />;
         case VIEWS.PRODUCTS:
             return <AdminProducts />;
+        case VIEWS.PROFILE: // VISTA DEL PERFIL
+            return <AdminProfile authUser={authUser} onProfileUpdate={onProfileUpdate} />;
         case VIEWS.CUSTOMERS:
+            return <AdminCustomers />;
         case VIEWS.REPORTS:
+            return <AdminReports />;
         default:
             return (
                 <div className="tableCard p-4 bg-white text-dark">
@@ -209,29 +222,35 @@ function ContentView({ view }) {
 
 function Admin() {
     const navigate = useNavigate();
-    const [auth, setAuth] = useState(null);
+    // Leer el estado inicial de auth desde localStorage
+    const [auth, setAuth] = useState(() => {
+        try {
+            const raw = localStorage.getItem('authUser');
+            return raw ? JSON.parse(raw) : null;
+        } catch {
+            return null;
+        }
+    });
+
     const [menuOpen, setMenuOpen] = useState(false);
-    // Estado para manejar la vista actual
     const [currentView, setCurrentView] = useState(VIEWS.DASHBOARD);
 
 
     useEffect(() => {
-        try {
-            const raw = localStorage.getItem('authUser');
-            const parsed = raw ? JSON.parse(raw) : null;
-            if (!parsed || parsed.role !== 'admin') {
-                navigate('/', { replace: true });
-                return;
-            }
-            setAuth(parsed);
-        } catch {
+        if (!auth || auth.role !== 'admin') {
             navigate('/', { replace: true });
+            return;
         }
-    }, [navigate]);
+    }, [navigate, auth]);
 
     const handleLogout = () => {
         localStorage.removeItem('authUser');
         navigate('/', { replace: true });
+    };
+
+    // Función para actualizar el estado de la sesión tras la edición del perfil
+    const handleProfileUpdate = (updatedData) => {
+        setAuth(updatedData);
     };
 
     if (!auth) return null;
@@ -295,10 +314,21 @@ function Admin() {
                                 <IconChart /> Reportes
                             </button>
                         </li>
+                        {/* Botón de Mi Perfil en el Sidebar */}
+                        <li className="menuItem">
+                            <button
+                                type="button"
+                                className={`menuButton ${currentView === VIEWS.PROFILE ? 'menuButtonActive' : ''}`}
+                                onClick={() => setCurrentView(VIEWS.PROFILE)}
+                            >
+                                <IconPerson /> Mi Perfil
+                            </button>
+                        </li>
                     </ul>
 
                     <div className="separator" />
 
+                    {/* Menú Desplegable de Usuario (Dropdown) */}
                     <div className={`dropdown userSection ${menuOpen ? 'open' : ''}`}>
                         <button
                             type="button"
@@ -312,7 +342,17 @@ function Admin() {
                         </button>
                         <div className="dropdownMenu" role="menu">
                             <button className="dropdownItem" type="button">Configuración</button>
-                            <button className="dropdownItem" type="button">Perfil</button>
+                            {/* Acción del Dropdown: Cambia la vista a Perfil */}
+                            <button
+                                className="dropdownItem"
+                                type="button"
+                                onClick={() => {
+                                    setCurrentView(VIEWS.PROFILE);
+                                    setMenuOpen(false);
+                                }}
+                            >
+                                Perfil
+                            </button>
                             <div className="dropdownDivider" />
                             <button className="dropdownItem" type="button" onClick={handleLogout}>
                                 Cerrar Sesión
@@ -331,7 +371,11 @@ function Admin() {
                     )}
 
                     {/* Renderiza el contenido dinámicamente */}
-                    <ContentView view={currentView} />
+                    <ContentView
+                        view={currentView}
+                        authUser={auth}
+                        onProfileUpdate={handleProfileUpdate}
+                    />
 
                 </main>
             </div>

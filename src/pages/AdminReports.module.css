@@ -1,0 +1,72 @@
+/* src/pages/AdminReports.module.css */
+
+.reportsContainer {
+    padding: 30px;
+    background: #212529;
+}
+
+.title {
+    color: #e5e7eb; /* Texto claro */
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Tarjeta de resumen de estadísticas */
+.summaryCard {
+    background-color: #1f2937; /* Fondo oscuro principal */
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Puntuación promedio */
+.ratingText {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffc107; /* Color de las estrellas */
+}
+
+/* Contenedor de las tarjetas de reseña */
+.reviewGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Tarjeta de reseña individual */
+.reviewCard {
+    background-color: #374151; /* Fondo oscuro ligeramente más claro para contraste */
+    color: #e5e7eb;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-left: 5px solid #0d6efd; /* Color primario de acento */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.reviewAuthor {
+    font-weight: 700;
+    color: #4cc9f0; /* Color de acento */
+    margin-bottom: 5px;
+}
+
+.reviewDate {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-bottom: 10px;
+}
+
+/* Estilo para las estrellas */
+.starRating {
+    color: #ffc107; /* Color amarillo */
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
