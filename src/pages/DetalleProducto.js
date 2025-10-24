@@ -1,13 +1,13 @@
+// src/pages/DetalleProducto.js
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-// --- Importar servicio de productos ---
 import { getProductById } from '../utils/productService';
-// Reutilizar el CSS del contenedor principal
 import styles from './Productos.module.css';
 
 function DetalleProducto() {
-    const { id } = useParams(); // Obtiene el ID del producto desde la URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const { agregarAlCarrito } = useCart();
     const [producto, setProducto] = useState(null);
@@ -18,7 +18,6 @@ function DetalleProducto() {
         if (foundProduct) {
             setProducto(foundProduct);
         } else {
-            // Si el producto no existe, redirigir a la página de productos
             navigate('/Productos', { replace: true });
         }
         setIsLoading(false);
@@ -27,7 +26,6 @@ function DetalleProducto() {
     const handleAddToCart = () => {
         if (producto) {
             agregarAlCarrito(producto);
-            // Opcional: Mostrar una notificación o redirigir al carrito (offcanvas)
         }
     }
 
@@ -41,19 +39,28 @@ function DetalleProducto() {
         );
     }
 
-    // Solo se renderiza si producto existe (si no, el useEffect redirige)
     return (
         <div className={styles.pageContainer}>
             <div className={styles.contentBox} style={{maxWidth: '1000px'}}>
 
                 <div className="row">
                     {/* Columna de la Imagen */}
-                    <div className="col-md-6 mb-4 mb-md-0">
+                    <div className="col-md-6 mb-4 mb-md-0 d-flex justify-content-center align-items-center"
+                        // --- AJUSTE CLAVE: Añadimos un estilo para forzar el alto y centrar ---
+                         style={{ minHeight: '400px', padding: '20px' }}>
                         <img
-                            src={producto.imagen}
+                            src={producto.imageLink}
                             alt={producto.nombre}
                             className="img-fluid rounded-4 shadow-lg"
-                            style={{ maxHeight: '500px', objectFit: 'cover', width: '100%' }}
+                            style={{
+                                maxHeight: '100%',
+                                objectFit: 'contain',
+                                width: '100%',
+                                backgroundColor: '#ffffff',
+                                padding: '10px'
+                            }}
+                            // Agregamos un borde sutil para ver la caja de la imagen
+                            onError={(e) => e.target.style.border = '2px dashed red'}
                         />
                     </div>
 
@@ -61,6 +68,7 @@ function DetalleProducto() {
                     <div className="col-md-6 text-white">
                         <h1 className="display-4 fw-bold mb-3">{producto.nombre}</h1>
 
+                        {/* Pequeño texto extra que se veía en la imagen (asumo que es la descripción) */}
                         <p className="lead text-white-50 mb-4">{producto.descripcion}</p>
 
                         <div className="mb-4 p-3 bg-secondary rounded-3 bg-opacity-25">

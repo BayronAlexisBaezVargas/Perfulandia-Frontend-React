@@ -1,14 +1,12 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom'; // Importar useNavigate
+import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/image.png';
 import { useCart } from '../context/CartContext';
-// --- CAMBIO: Importar iconos necesarios y useAuth ---
 import { CartFill, PersonCircle, BoxArrowRight } from 'react-bootstrap-icons';
 import { useAuth } from '../utils/auth';
 
 const NAV_LINKS = [
     { to: '/', label: 'Inicio' },
-    // Eliminado el link estático a InicioSesion/Registro
     { to: '/Productos', label: 'Productos' },
 ];
 

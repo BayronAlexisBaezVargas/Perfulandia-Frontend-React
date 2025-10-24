@@ -30,6 +30,8 @@ import Perfil from "./pages/Perfil";
 
 import DetalleProducto from "./pages/DetalleProducto";
 
+import ConfirmacionCompra from "./pages/ConfirmacionCompra";
+
 function Layout() {
     const location = useLocation();
     const hideChrome = location.pathname.startsWith('/admin');
@@ -50,8 +52,10 @@ function Layout() {
                 <Route path="/contacto" element={<Contacto />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/detalle-pago" element={<DetallePago />} />
+                <Route path="/confirmacion-compra" element={<ConfirmacionCompra />} />
                 <Route path="/perfil" element={<Perfil />} />
                 <Route path="/productos/:id" element={<DetalleProducto />} />
+                <Route path="/confirmacion-compra" element={<ConfirmacionCompra />} />
             </Routes>
             {!hideChrome && <Footer />}
         </>

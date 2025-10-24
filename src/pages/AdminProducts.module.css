@@ -1,0 +1,84 @@
+/* src/pages/AdminProducts.module.css */
+
+.productAdminRoot {
+    padding: 20px;
+    background-color: #343a40; /* Fondo oscuro sutil */
+    min-height: 100vh;
+}
+
+.tableCard {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.table thead th {
+    background: #212529; /* Fondo de encabezado oscuro */
+    color: #f8f9fa;
+    text-align: left;
+    padding: 12px;
+    white-space: nowrap;
+}
+
+.table tbody td,
+.table tbody th {
+    padding: 10px 12px;
+    border-top: 1px solid #e5e7eb;
+    white-space: nowrap;
+    color: #212529;
+}
+
+.table tbody tr:hover { background: #f3f4f6; }
+
+.productThumb {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #eee;
+}
+
+.descriptionCell {
+    white-space: normal;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Usar display block/webkit para multi-line ellipsis si es necesario,
+       pero por ahora limitaremos el ancho para no romper la tabla */
+}
+
+.criticalRow {
+    background-color: #f8d7da; /* Fondo rojo claro para crítica */
+}
+.criticalRow td {
+    color: #721c24;
+}
+
+.imagePreview {
+    max-width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+    border: 1px solid #495057;
+    border-radius: 8px;
+    margin-top: 10px;
+    display: none; /* Se mostrará con onLoad */
+}
+
+/* Estilos de botones de acción en la tabla */
+.table button {
+    cursor: pointer;
+}

@@ -10,6 +10,7 @@ function Productos() {
     const [productos, setProductos] = useState([]);
 
     useEffect(() => {
+        // Obtenemos los productos con sus imageLink (rutas)
         setProductos(getProducts());
     }, []);
 

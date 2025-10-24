@@ -1,12 +1,17 @@
+// src/context/CartContext.js
+
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import Swal from 'sweetalert2';
 
-
+// 1. Crear el Contexto
 const CartContext = createContext();
 
+// 2. Crear un Hook personalizado para usar el contexto (más fácil)
 export const useCart = () => useContext(CartContext);
 
+// 3. Crear el Proveedor del Contexto
 export const CartProvider = ({ children }) => {
-    // --- Toda la lógica del carrito que estaba en Productos.js se mueve aquí ---
+    // ... (Inicialización y useEffect sin cambios) ...
 
     // 1. Inicializa el carrito leyendo desde localStorage
     const [carrito, setCarrito] = useState(() => {
@@ -24,18 +29,52 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('carrito', JSON.stringify(carrito));
     }, [carrito]);
 
-    // 3. Lógica para agregar al carrito
+    // 3. Lógica para agregar al carrito (CON ALERTAS TIPO TOAST)
     const agregarAlCarrito = (producto) => {
+        if (producto.stock <= 0) {
+            // Alerta de Error (más pequeña, tipo toast)
+            Swal.fire({
+                toast: true,
+                position: 'top-start', // <--- CAMBIO CLAVE: Movido a la izquierda
+                icon: 'error',
+                title: `${producto.nombre} agotado.`,
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+            return;
+        }
+
+        let isNewItem = false;
+
         setCarrito(prevCarrito => {
             const itemEncontrado = prevCarrito.find(item => item.id === producto.id);
             if (itemEncontrado) {
+                // Cantidad actualizada
                 return prevCarrito.map(item =>
                     item.id === producto.id
                         ? { ...item, cantidad: item.cantidad + 1 }
                         : item
                 );
             } else {
+                // Nuevo producto
+                isNewItem = true;
                 return [...prevCarrito, { ...producto, cantidad: 1 }];
+            }
+        });
+
+        // Alerta de Éxito (más pequeña, tipo toast)
+        Swal.fire({
+            toast: true,
+            position: "top-start", // <--- CAMBIO CLAVE: Movido a la izquierda
+            icon: "success",
+            title: isNewItem ? `${producto.nombre} añadido.` : `Una unidad más de ${producto.nombre}.`,
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
             }
         });
     };

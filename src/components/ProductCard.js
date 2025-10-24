@@ -23,7 +23,8 @@ function ProductCard({ producto, onAgregarAlCarrito }) {
         >
             <div className={styles.card}>
                 <img
-                    src={producto.imagen}
+                    // --- CORRECCIÓN: Usar imageLink ---
+                    src={producto.imageLink}
                     alt={producto.nombre}
                     className={styles.cardImage}
                 />

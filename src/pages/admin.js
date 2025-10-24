@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/image.png';
 import './admin.modules.css';
 
+// --- Componentes y Servicios de Vistas ---
+import AdminProducts from './AdminProducts';
+import AdminOrders from './AdminOrders';
+import { getOrders } from '../utils/orderService'; // Importar el servicio de órdenes
+
 /* Iconos simples en SVG (sin dependencias) */
 function IconCash(props) {
     return (
@@ -54,10 +59,161 @@ function IconChart(props) {
     );
 }
 
+const VIEWS = {
+    DASHBOARD: 'dashboard',
+    ORDERS: 'orders',
+    PRODUCTS: 'products',
+    CUSTOMERS: 'customers',
+    REPORTS: 'reports',
+};
+
+// Helper para mapear el estado a la clase de Bootstrap
+const getBadgeClass = (status) => {
+    switch (status) {
+        case 'Completado':
+            return 'badgeSuccess';
+        case 'Pendiente':
+            return 'badgeWarning';
+        case 'Cancelado':
+            return 'badgeDanger';
+        case 'Enviado':
+            return 'badgeInfo';
+        default:
+            return 'badgeInfo';
+    }
+}
+
+// Componente para renderizar el contenido según la vista seleccionada
+function ContentView({ view }) {
+    // Lógica dinámica para el Dashboard
+    const [latestOrders, setLatestOrders] = useState([]);
+    const [stats, setStats] = useState({ totalSales: 0, newOrders: 0, totalCustomers: 1283 });
+
+    useEffect(() => {
+        if (view === VIEWS.DASHBOARD) {
+            const allOrders = getOrders();
+            // Mostrar solo los 5 pedidos más recientes
+            setLatestOrders(allOrders.slice(0, 5));
+
+            // Simular estadísticas basadas en los pedidos (simple)
+            const totalSales = allOrders.reduce((sum, order) => sum + (order.status !== 'Cancelado' ? order.total : 0), 0);
+            // El número de clientes es estático en este caso, solo actualizamos ventas y pendientes
+            const newOrders = allOrders.filter(order => order.status === 'Pendiente').length;
+
+            setStats(prev => ({
+                ...prev,
+                totalSales: totalSales,
+                newOrders: newOrders
+            }));
+        }
+    }, [view]);
+
+    switch (view) {
+        case VIEWS.DASHBOARD:
+            return (
+                <>
+                    {/* Sección de Estadísticas - Dinámica */}
+                    <section className="stats">
+                        <article className="statCard">
+                            <div className="statIcon statIconSuccess" aria-hidden="true">
+                                <IconCash />
+                            </div>
+                            <div>
+                                <p className="cardTitle">Ventas del Mes (Total)</p>
+                                <p className="cardValue">${stats.totalSales.toLocaleString('es-CL')}</p>
+                            </div>
+                        </article>
+
+                        <article className="statCard">
+                            <div className="statIcon statIconPrimary" aria-hidden="true">
+                                <IconReceipt />
+                            </div>
+                            <div>
+                                <p className="cardTitle">Pedidos Pendientes</p>
+                                <p className="cardValue">{stats.newOrders}</p>
+                            </div>
+                        </article>
+
+                        <article className="statCard">
+                            <div className="statIcon statIconInfo" aria-hidden="true">
+                                <IconPeople />
+                            </div>
+                            <div>
+                                <p className="cardTitle">Total de Clientes</p>
+                                <p className="cardValue">{stats.totalCustomers.toLocaleString('es-CL')}</p>
+                            </div>
+                        </article>
+                    </section>
+
+                    {/* Sección de Últimos Pedidos - Dinámica */}
+                    <section className="tableCard">
+                        <header className="tableHeader">
+                            <h2 className="tableTitle">Últimos Pedidos</h2>
+                        </header>
+                        <div className="tableWrapper">
+                            <table className="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID Pedido</th>
+                                    <th scope="col">Cliente</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Estado</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {latestOrders.map((order) => (
+                                    <tr key={order.id}>
+                                        <th scope="row">{order.id}</th>
+                                        <td>{order.customer}</td>
+                                        <td>{order.date}</td>
+                                        <td>${order.total.toLocaleString('es-CL')}</td>
+                                        <td>
+                                            <span className={`badge ${getBadgeClass(order.status)}`}>
+                                                {order.status}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {latestOrders.length === 0 && (
+                                    <tr>
+                                        <td colSpan="5" className="text-center p-4 text-dark">No hay pedidos registrados.</td>
+                                    </tr>
+                                )}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Paginación simplificada */}
+                        <nav className="pagination" aria-label="Page navigation">
+                            <button className="pageBtn pageBtnActive text-dark" type="button" disabled={latestOrders.length === 0}>1</button>
+                        </nav>
+                    </section>
+                </>
+            );
+        case VIEWS.ORDERS:
+            return <AdminOrders />;
+        case VIEWS.PRODUCTS:
+            return <AdminProducts />;
+        case VIEWS.CUSTOMERS:
+        case VIEWS.REPORTS:
+        default:
+            return (
+                <div className="tableCard p-4 bg-white text-dark">
+                    <p>Contenido para {view.charAt(0).toUpperCase() + view.slice(1)}.</p>
+                </div>
+            );
+    }
+}
+
+
 function Admin() {
     const navigate = useNavigate();
     const [auth, setAuth] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
+    // Estado para manejar la vista actual
+    const [currentView, setCurrentView] = useState(VIEWS.DASHBOARD);
+
 
     useEffect(() => {
         try {
@@ -80,6 +236,9 @@ function Admin() {
 
     if (!auth) return null;
 
+    // Determinar si mostrar el header (solo en Dashboard)
+    const showHeader = currentView === VIEWS.DASHBOARD;
+
     return (
         <div className="admin">
             <div className="adminLayout">
@@ -87,32 +246,52 @@ function Admin() {
                 <aside className="sidebar">
                     <div className="brand">
                         <img className="brandLogo" src={logo} alt="Perfulandia" />
-                        <span className="brandText">Perfulandia</span>
+                        <span className="brandText">Perfulandia (Admin)</span>
                     </div>
 
                     <ul className="menu">
                         <li className="menuItem">
-                            <button type="button" className="menuButton menuButtonActive">
+                            <button
+                                type="button"
+                                className={`menuButton ${currentView === VIEWS.DASHBOARD ? 'menuButtonActive' : ''}`}
+                                onClick={() => setCurrentView(VIEWS.DASHBOARD)}
+                            >
                                 <IconDashboard /> Dashboard
                             </button>
                         </li>
                         <li className="menuItem">
-                            <button type="button" className="menuButton">
+                            <button
+                                type="button"
+                                className={`menuButton ${currentView === VIEWS.ORDERS ? 'menuButtonActive' : ''}`}
+                                onClick={() => setCurrentView(VIEWS.ORDERS)}
+                            >
                                 <IconReceipt /> Pedidos
                             </button>
                         </li>
                         <li className="menuItem">
-                            <button type="button" className="menuButton">
+                            <button
+                                type="button"
+                                className={`menuButton ${currentView === VIEWS.PRODUCTS ? 'menuButtonActive' : ''}`}
+                                onClick={() => setCurrentView(VIEWS.PRODUCTS)}
+                            >
                                 <IconBox /> Productos
                             </button>
                         </li>
                         <li className="menuItem">
-                            <button type="button" className="menuButton">
+                            <button
+                                type="button"
+                                className={`menuButton ${currentView === VIEWS.CUSTOMERS ? 'menuButtonActive' : ''}`}
+                                onClick={() => setCurrentView(VIEWS.CUSTOMERS)}
+                            >
                                 <IconUsers /> Clientes
                             </button>
                         </li>
                         <li className="menuItem">
-                            <button type="button" className="menuButton">
+                            <button
+                                type="button"
+                                className={`menuButton ${currentView === VIEWS.REPORTS ? 'menuButtonActive' : ''}`}
+                                onClick={() => setCurrentView(VIEWS.REPORTS)}
+                            >
                                 <IconChart /> Reportes
                             </button>
                         </li>
@@ -144,106 +323,16 @@ function Admin() {
 
                 {/* Contenido principal */}
                 <main className="content">
-                    <div className="header">
-                        <h1 className="headerTitle">Hola, {auth?.name || 'Administrador'}</h1>
-                        <span className="headerMuted">{auth?.email}</span>
-                    </div>
-
-                    <section className="stats">
-                        <article className="statCard">
-                            <div className="statIcon statIconSuccess" aria-hidden="true">
-                                <IconCash />
-                            </div>
-                            <div>
-                                <p className="cardTitle">Ventas del Mes</p>
-                                <p className="cardValue">$8.450.000</p>
-                            </div>
-                        </article>
-
-                        <article className="statCard">
-                            <div className="statIcon statIconPrimary" aria-hidden="true">
-                                <IconReceipt />
-                            </div>
-                            <div>
-                                <p className="cardTitle">Nuevos Pedidos</p>
-                                <p className="cardValue">124</p>
-                            </div>
-                        </article>
-
-                        <article className="statCard">
-                            <div className="statIcon statIconInfo" aria-hidden="true">
-                                <IconPeople />
-                            </div>
-                            <div>
-                                <p className="cardTitle">Total de Clientes</p>
-                                <p className="cardValue">1.283</p>
-                            </div>
-                        </article>
-                    </section>
-
-                    <section className="tableCard">
-                        <header className="tableHeader">
-                            <h2 className="tableTitle">Últimos Pedidos</h2>
-                        </header>
-                        <div className="tableWrapper">
-                            <table className="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">ID Pedido</th>
-                                    <th scope="col">Cliente</th>
-                                    <th scope="col">Fecha</th>
-                                    <th scope="col">Total</th>
-                                    <th scope="col">Estado</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th scope="row">#PF-0815</th>
-                                    <td>Marcelo Ríos</td>
-                                    <td>2025-09-15</td>
-                                    <td>$130.000</td>
-                                    <td><span className="badge badgeSuccess">Completado</span></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">#PF-0814</th>
-                                    <td>Ana González</td>
-                                    <td>2025-09-14</td>
-                                    <td>$80.000</td>
-                                    <td><span className="badge badgeWarning">Pendiente</span></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">#PF-0812</th>
-                                    <td>Carlos Pérez</td>
-                                    <td>2025-09-13</td>
-                                    <td>$210.000</td>
-                                    <td><span className="badge badgeDanger">Cancelado</span></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">#PF-0811</th>
-                                    <td>Sofía Vergara</td>
-                                    <td>2025-09-12</td>
-                                    <td>$70.000</td>
-                                    <td><span className="badge badgeSuccess">Completado</span></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">#PF-0810</th>
-                                    <td>Benjamín Vicuña</td>
-                                    <td>2025-09-11</td>
-                                    <td>$40.000</td>
-                                    <td><span className="badge badgeInfo">Enviado</span></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                    {showHeader && (
+                        <div className="header">
+                            <h1 className="headerTitle">Hola, {auth?.name || 'Administrador'}</h1>
+                            <span className="headerMuted">{auth?.email}</span>
                         </div>
+                    )}
 
-                        <nav className="pagination" aria-label="Page navigation">
-                            <button className="pageBtn pageBtnDisabled text-dark" type="button" disabled>Anterior</button>
-                            <button className="pageBtn pageBtnActive " type="button">1</button>
-                            <button className="pageBtn text-dark" type="button">2</button>
-                            <button className="pageBtn text-dark" type="button">3</button>
-                            <button className="pageBtn text-dark" type="button">Siguiente</button>
-                        </nav>
-                    </section>
+                    {/* Renderiza el contenido dinámicamente */}
+                    <ContentView view={currentView} />
+
                 </main>
             </div>
         </div>
