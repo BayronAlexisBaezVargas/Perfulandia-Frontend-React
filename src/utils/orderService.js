@@ -1,5 +1,3 @@
-// src/utils/orderService.js
-
 const ORDERS_KEY = 'pedidos';
 
 // Datos de órdenes de ejemplo para inicializar la vista del administrador

@@ -1,7 +1,3 @@
-// src/utils/productService.test.js
-
-// Importamos las funciones a probar. Simularemos localStorage si es necesario,
-// pero asumiremos que getProducts/saveProducts manejan el almacenamiento.
 import { getProductById, getCriticalProducts, saveOrUpdateProduct, getProducts, saveProducts } from './productService';
 
 // Datos de prueba simulados para evitar conflictos con el localStorage real.

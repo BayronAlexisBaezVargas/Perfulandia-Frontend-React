@@ -1,6 +1,4 @@
-// src/context/CartContext.test.js
-
-// Nota: Esta es una prueba "mock" de la lógica del carrito, ya que no estamos
+// Esta es una prueba "mock" de la lógica del carrito, ya que no estamos
 // montando el componente React completo, solo probamos la función de cálculo.
 
 // Función simple de cálculo (duplicada de CartContext para fines de prueba)

@@ -1,7 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-// --- NUEVO ---
-// 1. Importa el CartProvider
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './utils/auth';
 
@@ -12,8 +10,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 
-// --- NUEVO ---
-// 2. Importa el componente Carrito (Offcanvas)
 import Carrito from "./components/Carrito";
 
 import Home from "./pages/Home";

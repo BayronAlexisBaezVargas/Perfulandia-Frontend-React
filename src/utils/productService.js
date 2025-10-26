@@ -1,7 +1,3 @@
-// src/utils/productService.js
-
-
-
 const PRODUCTS_KEY = 'perfumes';
 const STOCK_CRITICAL_THRESHOLD = 10;
 
